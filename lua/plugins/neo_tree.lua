@@ -21,13 +21,12 @@ return {
   config = function()
     require("neo-tree").setup {
       filesystem = {
-        follow_current_file = true,
         hijack_netrw = true,
         use_libuv_file_watcher = true,
         window = {
           mappings = {
-            ["s"] = "open_split",
-            ["S"] = "open_vsplit",
+            ["S"] = "open_split",
+            ["s"] = "open_vsplit",
             ["?"] = "show_help",
           },
         },
