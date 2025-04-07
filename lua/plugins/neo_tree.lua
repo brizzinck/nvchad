@@ -32,15 +32,22 @@ return {
         use_libuv_file_watcher = true,
       },
     }
-    vim.defer_fn(function()
-      for _, win in ipairs(vim.api.nvim_list_wins()) do
-        local buf = vim.api.nvim_win_get_buf(win)
-        local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
-        if ft == "neo-tree" then
-          vim.api.nvim_set_option_value("number", true, { win = win })
-          vim.api.nvim_set_option_value("relativenumber", true, { win = win })
-        end
+
+    local function enable_numbers_if_neotree()
+      local buf = vim.api.nvim_get_current_buf()
+      local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
+      if ft == "neo-tree" then
+        vim.opt_local.number = true
+        vim.opt_local.relativenumber = true
       end
-    end, 100)
+    end
+
+    vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "CursorHold" }, {
+      callback = enable_numbers_if_neotree,
+    })
+
+    vim.schedule(function()
+      enable_numbers_if_neotree()
+    end)
   end,
 }
