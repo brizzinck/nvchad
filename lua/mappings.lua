@@ -272,3 +272,5 @@ map("n", "<leader>gl", "<cmd>Flog<CR>", { desc = "Git Log" })
 map("n", "<leader>gf", "<cmd>DiffviewFileHistory<CR>", { desc = "Git File History" })
 map("n", "<leader>gc", "<cmd>DiffviewOpen HEAD~1<CR>", { desc = "Git Last Commit" })
 map("n", "<leader>gt", "<cmd>DiffviewToggleFile<CR>", { desc = "Git File History" })
+
+map("n", "<leader>a", "<cmd>CopilotChat<CR>", { desc = "Copilot Chat" })
