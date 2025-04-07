@@ -121,7 +121,6 @@ map("n", "[t", "<cmd>tabprevious<CR>", { desc = "Previous Tab" })
 
 map("i", "<C-s>", "<cmd>w!<CR><ESC>", { desc = "Force Write" })
 map("i", "jj", "<ESC>", { desc = "Esc insert" })
-map("i", "jk", "<ESC>", { desc = "Esc insert" })
 
 map("n", "<leader>w", "<cmd>w<CR>", { desc = "Save" })
 
