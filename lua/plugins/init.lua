@@ -15,7 +15,6 @@ return {
   require "plugins.treesitter",
   require "plugins.inlayhints",
   require "plugins.rust_tools",
-  require "plugins.better_escape",
   require "plugins.alpha",
   require "plugins.conform",
   require "plugins.copilot",
