@@ -272,6 +272,9 @@ map("n", "<leader>tf", function()
 end, { desc = "Run file test" })
 map("n", "<leader>to", "<cmd>Neotest output<CR>", { desc = "Show test output" })
 map("n", "<leader>ts", "<cmd>Neotest summary<CR>", { desc = "Show test summary" })
+map("n", "<leader>tn", function()
+  vim.cmd "tabnew | terminal"
+end, { desc = "Open full-screen terminal in new tab" })
 
 map("n", "<leader>gl", "<cmd>Flog<CR>", { desc = "Git Log" })
 map("n", "<leader>gf", "<cmd>DiffviewFileHistory<CR>", { desc = "Git File History" })
