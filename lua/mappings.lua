@@ -5,12 +5,12 @@ local map = vim.keymap.set
 map("n", "<C-s>", "<cmd>w!<CR>", { desc = "Force Write" })
 map("n", "<leader>q", "<cmd>q<CR>", { desc = "Force Quit" })
 map("n", "<leader>n", "<cmd>enew<CR>", { desc = "New File" })
-vim.keymap.set("n", "<leader>cd", function()
+map("n", "<leader>cd", function()
   local path = vim.fn.expand "%:p:h"
   vim.cmd("cd " .. path)
   print("cd to: " .. path)
 end, { desc = "Change cwd to current file dir" })
-vim.keymap.set("n", "<leader>cb", function()
+map("n", "<leader>cb", function()
   vim.cmd "cd .."
   print("cd .." .. vim.fn.getcwd())
 end, { desc = "Change cwd to previous dir" })
