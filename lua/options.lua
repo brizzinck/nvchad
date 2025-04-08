@@ -24,10 +24,10 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 
 vim.api.nvim_create_autocmd("TermClose", {
   pattern = "*",
-  callback = function()
+  callback = function(args)
     vim.defer_fn(function()
-      if vim.api.nvim_buf_is_valid(0) then
-        vim.api.nvim_buf_delete(0, { force = true })
+      if vim.api.nvim_buf_is_valid(args.buf) and vim.bo[args.buf].buftype == "terminal" then
+        vim.api.nvim_buf_delete(args.buf, { force = true })
       end
     end, 5)
   end,
