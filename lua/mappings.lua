@@ -124,8 +124,7 @@ map("n", "|", "<cmd>split<CR>", { desc = "Horizontal Split" })
 
 map("n", "]t", "<cmd>tabnext<CR>", { desc = "Next Tab" })
 map("n", "[t", "<cmd>tabprevious<CR>", { desc = "Previous Tab" })
-
-map("i", "<C-s>", "<cmd>silent! write!<CR>", { desc = "Force Write" })
+map("i", "<C-s>", "<cmd>silent! write!<CR><ESC>", { desc = "Force Write" })
 map("i", "jj", "<ESC>", { desc = "Esc insert" })
 map("t", "nn", "<C-\\><C-n>", { noremap = true, silent = true })
 
