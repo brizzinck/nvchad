@@ -21,3 +21,14 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     vim.cmd "echo ''"
   end,
 })
+
+vim.api.nvim_create_autocmd("TermClose", {
+  pattern = "*",
+  callback = function()
+    vim.defer_fn(function()
+      if vim.api.nvim_buf_is_valid(0) then
+        vim.api.nvim_buf_delete(0, { force = true })
+      end
+    end, 5)
+  end,
+})

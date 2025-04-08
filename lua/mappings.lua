@@ -2,7 +2,7 @@ require "nvchad.mappings"
 
 local map = vim.keymap.set
 
-map("n", "<C-s>", "<cmd>w!<CR>", { desc = "Force Write" })
+map("n", "<C-s>", "<cmd>silent! write!<CR>", { desc = "Force Write" })
 map("n", "<leader>q", "<cmd>q<CR>", { desc = "Force Quit" })
 map("n", "<leader>n", "<cmd>enew<CR>", { desc = "New File" })
 map("n", "<leader>cd", function()
@@ -125,8 +125,9 @@ map("n", "|", "<cmd>split<CR>", { desc = "Horizontal Split" })
 map("n", "]t", "<cmd>tabnext<CR>", { desc = "Next Tab" })
 map("n", "[t", "<cmd>tabprevious<CR>", { desc = "Previous Tab" })
 
-map("i", "<C-s>", "<cmd>w!<CR><ESC>", { desc = "Force Write" })
+map("i", "<C-s>", "<cmd>silent! write!<CR>", { desc = "Force Write" })
 map("i", "jj", "<ESC>", { desc = "Esc insert" })
+map("t", "nn", "<C-\\><C-n>", { noremap = true, silent = true })
 
 map("n", "<leader>w", "<cmd>w<CR>", { desc = "Save" })
 
