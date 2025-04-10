@@ -26,20 +26,16 @@ return {
       }
     end,
   },
-
   {
     {
       "CopilotC-Nvim/CopilotChat.nvim",
-      branch = "main",
       dependencies = {
-        { "zbirenbaum/copilot.lua" },
-        { "nvim-lua/plenary.nvim" },
+        { "github/copilot.vim" },
+        { "nvim-lua/plenary.nvim", branch = "master" },
       },
-      config = function()
-        require("CopilotChat").setup {}
-      end,
-      cmd = "CopilotChat",
-      event = "VeryLazy",
+      build = "make tiktoken",
+      cmd = { "CopilotChat" },
+      opts = {},
     },
   },
 }
