@@ -32,4 +32,5 @@ return {
   require "plugins.fugitutive",
   require "plugins.diffview_pg",
   require "plugins.bqf",
+  require "plugins.auto_session",
 }

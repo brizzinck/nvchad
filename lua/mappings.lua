@@ -153,11 +153,11 @@ map("n", "<leader>o", "<cmd>Neotree focus filesystem<CR>", { desc = "Focus NeoTr
 
 map("n", "<leader>H", "<cmd>Alpha<CR>", { desc = "Dashboard/Home" })
 
-map("n", "<leader>Ss", "<cmd>SaveSession<CR>", { desc = "Save Session" })
-map("n", "<leader>Sl", "<cmd>LoadLastSession<CR>", { desc = "Load Last Session" })
-map("n", "<leader>Sd", "<cmd>DeleteSession<CR>", { desc = "Delete Session" })
-map("n", "<leader>Sf", "<cmd>SearchSession<CR>", { desc = "Search Sessions" })
-map("n", "<leader>S.", "<cmd>LoadCurrentDirSession<CR>", { desc = "Load CWD Session" })
+map("n", "<leader>Ss", "<cmd>SessionSave<CR>", { desc = "Save Session" })
+map("n", "<leader>Sl", "<cmd>SessionRestore<CR>", { desc = "Load Last Session" })
+map("n", "<leader>Sd", "<cmd>SessionDelete<CR>", { desc = "Delete Session" })
+map("n", "<leader>Sf", "<cmd>Telescope session-lens search_session<CR>", { desc = "Search Sessions" })
+map("n", "<leader>S.", "<cmd>SessionRestore<CR>", { desc = "Load CWD Session" })
 
 map("n", "<leader>pa", "<cmd>Lazy update<CR>", { desc = "Lazy Update Packages" })
 map("n", "<leader>pA", "<cmd>NvChadUpdate<CR>", { desc = "Update NVChad" })
@@ -292,3 +292,8 @@ map("n", "<M-6>", "<cmd>tabnext 6<CR>", { desc = "Go to tab 6" })
 map("n", "<M-7>", "<cmd>tabnext 7<CR>", { desc = "Go to tab 7" })
 map("n", "<M-8>", "<cmd>tabnext 8<CR>", { desc = "Go to tab 8" })
 map("n", "<M-9>", "<cmd>tabnext 9<CR>", { desc = "Go to tab 9" })
+
+map("v", "<Tab>", ">gv", { desc = "Indent right" })
+map("v", "<S-Tab>", "<gv", { desc = "Indent left" })
+map("x", "<Tab>", ">gv", { desc = "Indent block right" })
+map("x", "<S-Tab>", "<gv", { desc = "Indent block left" })
