@@ -9,10 +9,10 @@ return {
           enabled = true,
           auto_trigger = true,
           keymap = {
-            accept = "<Tab>",
+            accept = "<C-enter>",
             next = "<C-n>",
             prev = "<C-p>",
-            dismiss = "<C-e>",
+            dismiss = "<C-d>",
           },
         },
         panel = {
