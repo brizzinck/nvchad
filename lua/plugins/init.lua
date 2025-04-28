@@ -33,4 +33,5 @@ return {
   require "plugins.diffview_pg",
   require "plugins.bqf",
   require "plugins.auto_session",
+  require "plugins.augment",
 }
