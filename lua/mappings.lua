@@ -281,8 +281,6 @@ map("n", "<leader>gf", "<cmd>DiffviewFileHistory<CR>", { desc = "Git File Histor
 map("n", "<leader>gc", "<cmd>DiffviewOpen HEAD~1<CR>", { desc = "Git Last Commit" })
 map("n", "<leader>gt", "<cmd>DiffviewToggleFile<CR>", { desc = "Git File History" })
 
-map("n", "<leader>a", "<cmd>CopilotChat<CR>", { desc = "Copilot Chat" })
-
 map("n", "<M-1>", "<cmd>tabnext 1<CR>", { desc = "Go to tab 1" })
 map("n", "<M-2>", "<cmd>tabnext 2<CR>", { desc = "Go to tab 2" })
 map("n", "<M-3>", "<cmd>tabnext 3<CR>", { desc = "Go to tab 3" })
@@ -297,3 +295,7 @@ map("v", "<Tab>", ">gv", { desc = "Indent right" })
 map("v", "<S-Tab>", "<gv", { desc = "Indent left" })
 map("x", "<Tab>", ">gv", { desc = "Indent block right" })
 map("x", "<S-Tab>", "<gv", { desc = "Indent block left" })
+
+map("n", "<leader>ae", "<cmd>Copilot enable<CR>", { desc = "Enable copilot" })
+map("n", "<leader>ad", "<cmd>Copilot disable<CR>", { desc = "Disable copilot" })
+map("n", "<leader>ac", "<cmd>CopilotChat<CR>", { desc = "Toggle Copilot Chat" })
