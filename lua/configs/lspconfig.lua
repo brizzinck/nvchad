@@ -75,6 +75,34 @@ lspconfig.gopls.setup {
   },
 }
 
+lspconfig.omnisharp.setup {
+  cmd = { "dotnet", vim.fn.stdpath "data" .. "/mason/packages/omnisharp/libexec/OmniSharp.dll" },
+
+  root_dir = lspconfig.util.root_pattern("*.sln", "*.csproj", ".git"),
+
+  filetypes = { "cs", "vb" },
+  init_options = {},
+  settings = {
+    {
+      FormattingOptions = {
+        EnableEditorConfigSupport = true,
+        OrganizeImports = true,
+      },
+      MsBuild = {
+        LoadProjectsONDemand = true,
+      },
+      RoslynExtensionsOptions = {
+        EnableAnalyzersSupport = nil,
+        EnableImportCompletion = nil,
+        AnalyzeOpenDocumentsOnly = true,
+      },
+      Sdk = {
+        IncludePrereleases = true,
+      },
+    },
+  },
+}
+
 lspconfig.buf_ls.setup {
   cmd = { "bufls", "serve" },
   filetypes = { "proto" },
@@ -159,6 +187,7 @@ lspconfig.lua_ls.setup {
     },
   },
 }
+
 lspconfig.gradle_ls.setup {
   on_init = on_init,
   on_attach = on_attach_extended,
