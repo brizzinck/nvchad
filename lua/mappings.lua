@@ -201,6 +201,7 @@ map("n", "<leader>dp", "<cmd>lua require('dap').pause()<CR>", { desc = "DAP Paus
 map("n", "<leader>dr", "<cmd>lua require('dap').restart()<CR>", { desc = "DAP Restart" })
 map("n", "<leader>ds", "<cmd>lua require('dap').run_to_cursor()<CR>", { desc = "DAP Run to Cursor" })
 map("n", "<leader>dq", "<cmd>lua require('dap').close()<CR>", { desc = "DAP Close Session" })
+map("n", "<leader>db", "<cmd>lua require('dap').toggle_breakpoint()<CR>", { desc = "Toogle Breakpoint" })
 map("n", "<leader>dQ", "<cmd>lua require('dap').terminate()<CR>", { desc = "DAP Terminate" })
 map(
   "n",

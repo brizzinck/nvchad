@@ -57,6 +57,7 @@ lspconfig.gopls.setup {
   capabilities = cmp_capabilities,
   settings = {
     gopls = {
+      gofumpt = true,
       completeUnimported = true,
       usePlaceholders = true,
       hints = {
