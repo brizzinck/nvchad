@@ -165,7 +165,7 @@ map(
   "n",
   "<leader>pl",
   "<cmd>!git -C ~/.local/share/nvchad/ log --pretty=oneline -10<CR>",
-  { desc = "NVChad Changelog (пример)" }
+  { desc = "NVChad Changelog" }
 )
 map("n", "<leader>pm", "<cmd>Mason<CR>", { desc = "Mason Installer" })
 map("n", "<leader>pi", "<cmd>Lazy install<CR>", { desc = "Lazy Install" })
