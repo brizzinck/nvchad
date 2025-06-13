@@ -239,7 +239,7 @@ map("n", "<leader>gt", "<cmd>Telescope git_status<CR>", { desc = "Git Status" })
 map("n", "<leader>ls", "<cmd>Telescope lsp_document_symbols<CR>", { desc = "LSP Document Symbols" })
 map("n", "<leader>lG", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", { desc = "LSP Workspace Symbols" })
 
-map("n", "<A-i>", function()
+map({ "n", "t" }, "<A-i>", function()
   require("nvterm.terminal").toggle "float"
 end, { desc = "Toggle Terminal Vertical" })
 map("n", "<C-]>", function()
