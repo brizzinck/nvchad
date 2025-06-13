@@ -23,7 +23,6 @@ dashboard.section.footer.val = {
   "💻 Welcome, " .. user .. "!",
 }
 
--- optional: highlight groups
 dashboard.section.header.opts.hl = "Keyword"
 dashboard.section.buttons.opts.hl = "Function"
 dashboard.section.footer.opts.hl = "Type"
