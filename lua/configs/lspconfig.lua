@@ -166,6 +166,25 @@ lspconfig.clangd.setup {
   },
 }
 
+require("lspconfig").pasls.setup {
+  cmd = { "pasls" },
+  filetypes = { "pascal" },
+  root_dir = function(fname)
+    local util = require "lspconfig.util"
+    return util.root_pattern(".git", "*.pas")(fname) or vim.fn.getcwd()
+  end,
+  init_options = {
+    fpcOptions = {
+      "-Fu/usr/lib/fpc/3.2.2/units/x86_64-linux",
+      "-Fu/usr/lib/fpc/3.2.2/units/x86_64-linux/rtl",
+      "-Fi/usr/lib/fpc/3.2.2/units/x86_64-linux",
+      "-Fi/usr/lib/fpc/3.2.2/units/x86_64-linux/rtl",
+    },
+    includeWorkspaceFoldersAsUnitPaths = true,
+    includeWorkspaceFoldersAsIncludePaths = true,
+  },
+}
+
 lspconfig.lua_ls.setup {
   on_init = on_init,
   on_attach = on_attach_extended,
