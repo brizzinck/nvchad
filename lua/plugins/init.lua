@@ -35,4 +35,5 @@ return {
   require "plugins.auto_session",
   require "plugins.augment",
   require "plugins.nvterm",
+  require "plugins.lazydocker",
 }
