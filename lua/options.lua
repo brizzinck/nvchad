@@ -32,3 +32,8 @@ vim.api.nvim_create_autocmd("TermClose", {
     end, 5)
   end,
 })
+
+local original_close = vim.api.nvim_win_close
+vim.api.nvim_win_close = function(winid, force)
+  pcall(original_close, winid, force)
+end
