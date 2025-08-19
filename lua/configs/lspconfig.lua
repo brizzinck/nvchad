@@ -72,6 +72,7 @@ lspconfig.gopls.setup {
       analyses = {
         unusedparams = true,
       },
+      buildFlags = { "-tags=integration_database_test" },
     },
   },
 }
