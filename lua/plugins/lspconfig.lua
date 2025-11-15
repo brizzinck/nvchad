@@ -1,6 +1,14 @@
 return {
   "neovim/nvim-lspconfig",
   config = function()
-    require "configs.lspconfig"
+    vim.lsp.config("lua_ls", {
+      settings = {
+        Lua = {
+          workspace = {
+            checkThirdParty = false,
+          },
+        },
+      },
+    })
   end,
 }

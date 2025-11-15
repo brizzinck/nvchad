@@ -1,5 +1,5 @@
 local configs = require "nvchad.configs.lspconfig"
-local lspconfig = require "lspconfig"
+local lsp = vim.lsp
 
 local on_attach_default = configs.on_attach
 local on_init = configs.on_init
@@ -48,10 +48,10 @@ local function on_attach_extended(client, bufnr)
   buf_map("n", "gt", vim.lsp.buf.type_definition, "Go to Type Definition")
 end
 
-lspconfig.gopls.setup {
+lsp.enable "gopls"
+lsp.config("gopls", {
   cmd = { "gopls" },
   filetypes = { "go", "gomod", "gowork", "gotmpl" },
-  root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
@@ -75,13 +75,11 @@ lspconfig.gopls.setup {
       buildFlags = { "-tags=integration_database_test" },
     },
   },
-}
+})
 
-lspconfig.omnisharp.setup {
+lsp.enable "dotnet"
+lsp.config("dotnet", {
   cmd = { "dotnet", vim.fn.stdpath "data" .. "/mason/packages/omnisharp/libexec/OmniSharp.dll" },
-
-  root_dir = lspconfig.util.root_pattern("*.sln", "*.csproj", ".git"),
-
   filetypes = { "cs", "vb" },
   init_options = {},
   settings = {
@@ -103,18 +101,20 @@ lspconfig.omnisharp.setup {
       },
     },
   },
-}
+})
 
-lspconfig.buf_ls.setup {
+lsp.enable "buf_ls"
+
+lsp.config("buf_ls", {
   cmd = { "bufls", "serve" },
   filetypes = { "proto" },
-  root_dir = lspconfig.util.root_pattern("buf.yaml", "buf.gen.yaml", ".git"),
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
-}
+})
 
-lspconfig.pyright.setup {
+lsp.enable "pyright"
+lsp.config("pyright", {
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
@@ -132,21 +132,24 @@ lspconfig.pyright.setup {
       },
     },
   },
-}
+})
 
-lspconfig.html.setup {
+lsp.enable "html"
+lsp.config("html", {
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
-}
+})
 
-lspconfig.cssls.setup {
+lsp.enable "cssls"
+lsp.config("cssls", {
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
-}
+})
 
-lspconfig.clangd.setup {
+lsp.enable "clangd"
+lsp.config("clangd", {
   cmd = { "clangd", "--background-index", "--clang-tidy" },
   filetypes = { "c", "cpp", "objc", "objcpp" },
   on_init = on_init,
@@ -165,15 +168,12 @@ lspconfig.clangd.setup {
       },
     },
   },
-}
+})
 
-require("lspconfig").pasls.setup {
+lsp.enable "pasls"
+lsp.config("pasls", {
   cmd = { "pasls" },
   filetypes = { "pascal" },
-  root_dir = function(fname)
-    local util = require "lspconfig.util"
-    return util.root_pattern(".git", "*.pas")(fname) or vim.fn.getcwd()
-  end,
   init_options = {
     fpcOptions = {
       "-Fu/usr/lib/fpc/3.2.2/units/x86_64-linux",
@@ -184,9 +184,10 @@ require("lspconfig").pasls.setup {
     includeWorkspaceFoldersAsUnitPaths = true,
     includeWorkspaceFoldersAsIncludePaths = true,
   },
-}
+})
 
-lspconfig.lua_ls.setup {
+lsp.enable "lua_ls"
+lsp.config("lua_ls", {
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
@@ -207,21 +208,24 @@ lspconfig.lua_ls.setup {
       },
     },
   },
-}
+})
 
-lspconfig.gradle_ls.setup {
+lsp.enable "gradle_ls"
+lsp.config("gradle_ls", {
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
-}
+})
 
-lspconfig.prismals.setup {
+lsp.enable "prismals"
+lsp.config("prismals", {
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
-}
+})
 
-lspconfig.volar.setup {
+lsp.enable "vue_ls"
+lsp.config("vue_ls", {
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
@@ -231,4 +235,4 @@ lspconfig.volar.setup {
       hybridMode = false,
     },
   },
-}
+})

@@ -23,9 +23,7 @@ return {
             cargo = {
               buildScripts = { enable = true },
             },
-            checkOnSave = {
-              command = "clippy",
-            },
+            checkOnSave = true,
             diagnostics = {
               enable = true,
               disabled = {},
