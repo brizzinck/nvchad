@@ -17,6 +17,7 @@ M.treesitter = {
     "go",
     "rust",
     "toml",
+    "yaml",
   },
   indent = {
     enable = true,
@@ -25,6 +26,12 @@ M.treesitter = {
 
 M.mason = {
   ensure_installed = {
+    "yaml-language-server",
+    "yamlfix",
+    "yamlfmt",
+    "yamllint",
+    "protolint",
+    "protols",
     "lua-language-server",
     "css-lsp",
     "html-lsp",

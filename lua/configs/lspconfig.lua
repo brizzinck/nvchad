@@ -1,9 +1,4 @@
-local configs = require "nvchad.configs.lspconfig"
 local lsp = vim.lsp
-
-local on_attach_default = configs.on_attach
-local on_init = configs.on_init
-local capabilities_default = configs.capabilities
 
 local cmp_capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities_default)
 cmp_capabilities.offsetEncoding = { "utf-16" }
@@ -103,10 +98,10 @@ lsp.config("dotnet", {
   },
 })
 
-lsp.enable "buf_ls"
-
-lsp.config("buf_ls", {
-  cmd = { "bufls", "serve" },
+lsp.enable "protols"
+lsp.config("protols", {
+  cmd = { "protols" },
+  filetypes = { "proto" },
   filetypes = { "proto" },
   on_init = on_init,
   on_attach = on_attach_extended,
