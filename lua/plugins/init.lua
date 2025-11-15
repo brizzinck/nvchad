@@ -17,7 +17,6 @@ return {
   require "plugins.rust_tools",
   require "plugins.alpha",
   require "plugins.conform",
-  require "plugins.copilot",
   require "plugins.dadbod",
   require "plugins.gopher",
   require "plugins.notify",
@@ -33,7 +32,10 @@ return {
   require "plugins.diffview_pg",
   require "plugins.bqf",
   require "plugins.auto_session",
-  require "plugins.augment",
   require "plugins.nvterm",
   require "plugins.lazydocker",
+  require "plugins.wlclipboard",
+  -- unused
+  -- require "plugins.augment",
+  -- require "plugins.copilot",
 }

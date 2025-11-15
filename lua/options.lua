@@ -37,3 +37,5 @@ local original_close = vim.api.nvim_win_close
 vim.api.nvim_win_close = function(winid, force)
   pcall(original_close, winid, force)
 end
+
+vim.opt.clipboard = "unnamedplus"
