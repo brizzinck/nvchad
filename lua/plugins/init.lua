@@ -34,8 +34,8 @@ return {
   require "plugins.auto_session",
   require "plugins.nvterm",
   require "plugins.lazydocker",
-  require "plugins.wlclipboard",
   -- unused
+  -- require "plugins.wlclipboard",
   -- require "plugins.augment",
   -- require "plugins.copilot",
 }

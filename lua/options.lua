@@ -39,3 +39,23 @@ vim.api.nvim_win_close = function(winid, force)
 end
 
 vim.opt.clipboard = "unnamedplus"
+
+vim.g.clipboard = {
+  name = "osc52",
+  copy = {
+    ["+"] = function(lines, _)
+      require("osc52").copy(table.concat(lines, "\n"))
+    end,
+    ["*"] = function(lines, _)
+      require("osc52").copy(table.concat(lines, "\n"))
+    end,
+  },
+  paste = {
+    ["+"] = function()
+      return { vim.fn.split(vim.fn.getreg "+", "\n"), vim.fn.getregtype "+" }
+    end,
+    ["*"] = function()
+      return { vim.fn.split(vim.fn.getreg "*", "\n"), vim.fn.getregtype "*" }
+    end,
+  },
+}
