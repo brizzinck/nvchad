@@ -38,24 +38,31 @@ vim.api.nvim_win_close = function(winid, force)
   pcall(original_close, winid, force)
 end
 
-vim.opt.clipboard = "unnamedplus"
-
-vim.g.clipboard = {
-  name = "osc52",
-  copy = {
-    ["+"] = function(lines, _)
-      require("osc52").copy(table.concat(lines, "\n"))
-    end,
-    ["*"] = function(lines, _)
-      require("osc52").copy(table.concat(lines, "\n"))
-    end,
-  },
-  paste = {
-    ["+"] = function()
-      return { vim.fn.split(vim.fn.getreg "+", "\n"), vim.fn.getregtype "+" }
-    end,
-    ["*"] = function()
-      return { vim.fn.split(vim.fn.getreg "*", "\n"), vim.fn.getregtype "*" }
-    end,
-  },
-}
+-- vim.g.clipboard = {
+--   name = "osc52",
+--   copy = {
+--     ["+"] = function(lines, _)
+--       require("osc52").copy(table.concat(lines, "\n"))
+--     end,
+--     ["*"] = function(lines, _)
+--       require("osc52").copy(table.concat(lines, "\n"))
+--     end,
+--   },
+--   paste = {
+--     ["+"] = function()
+--       local content = vim.fn.getreg "+"
+--       return vim.split(content, "\n"), "l"
+--     end,
+--     ["*"] = function()
+--       local content = vim.fn.getreg "*"
+--       return vim.split(content, "\n"), "l"
+--     end,
+--   },
+-- }
+--
+-- vim.keymap.set("n", "p", function()
+--   local clip = require("osc52_paste").read_clipboard()
+--   if clip ~= "" then
+--     vim.api.nvim_put({ clip }, "c", true, true)
+--   end
+-- end, { desc = "Paste from local clipboard via OSC52" })

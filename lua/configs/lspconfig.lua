@@ -1,5 +1,5 @@
 local lsp = vim.lsp
-
+local root = require "utils.root"
 local cmp_capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities_default)
 cmp_capabilities.offsetEncoding = { "utf-16" }
 
@@ -43,9 +43,11 @@ local function on_attach_extended(client, bufnr)
   buf_map("n", "gt", vim.lsp.buf.type_definition, "Go to Type Definition")
 end
 
-lsp.enable "gopls"
 lsp.config("gopls", {
   cmd = { "gopls" },
+  root_dir = function(fname)
+    return root.find(vim.fn.bufnr(fname))
+  end,
   filetypes = { "go", "gomod", "gowork", "gotmpl" },
   on_init = on_init,
   on_attach = on_attach_extended,
@@ -72,7 +74,6 @@ lsp.config("gopls", {
   },
 })
 
-lsp.enable "dotnet"
 lsp.config("dotnet", {
   cmd = { "dotnet", vim.fn.stdpath "data" .. "/mason/packages/omnisharp/libexec/OmniSharp.dll" },
   filetypes = { "cs", "vb" },
@@ -98,7 +99,6 @@ lsp.config("dotnet", {
   },
 })
 
-lsp.enable "protols"
 lsp.config("protols", {
   cmd = { "protols" },
   filetypes = { "proto" },
@@ -108,7 +108,6 @@ lsp.config("protols", {
   capabilities = cmp_capabilities,
 })
 
-lsp.enable "pyright"
 lsp.config("pyright", {
   on_init = on_init,
   on_attach = on_attach_extended,
@@ -129,21 +128,19 @@ lsp.config("pyright", {
   },
 })
 
-lsp.enable "html"
-lsp.config("html", {
+lsp.config("htmx-lsp", {
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
+  filetypes = { "html", "css", "js" },
 })
 
-lsp.enable "cssls"
 lsp.config("cssls", {
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
 })
 
-lsp.enable "clangd"
 lsp.config("clangd", {
   cmd = { "clangd", "--background-index", "--clang-tidy" },
   filetypes = { "c", "cpp", "objc", "objcpp" },
@@ -165,23 +162,6 @@ lsp.config("clangd", {
   },
 })
 
-lsp.enable "pasls"
-lsp.config("pasls", {
-  cmd = { "pasls" },
-  filetypes = { "pascal" },
-  init_options = {
-    fpcOptions = {
-      "-Fu/usr/lib/fpc/3.2.2/units/x86_64-linux",
-      "-Fu/usr/lib/fpc/3.2.2/units/x86_64-linux/rtl",
-      "-Fi/usr/lib/fpc/3.2.2/units/x86_64-linux",
-      "-Fi/usr/lib/fpc/3.2.2/units/x86_64-linux/rtl",
-    },
-    includeWorkspaceFoldersAsUnitPaths = true,
-    includeWorkspaceFoldersAsIncludePaths = true,
-  },
-})
-
-lsp.enable "lua_ls"
 lsp.config("lua_ls", {
   on_init = on_init,
   on_attach = on_attach_extended,
@@ -205,21 +185,18 @@ lsp.config("lua_ls", {
   },
 })
 
-lsp.enable "gradle_ls"
 lsp.config("gradle_ls", {
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
 })
 
-lsp.enable "prismals"
 lsp.config("prismals", {
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
 })
 
-lsp.enable "vue_ls"
 lsp.config("vue_ls", {
   on_init = on_init,
   on_attach = on_attach_extended,
@@ -230,4 +207,11 @@ lsp.config("vue_ls", {
       hybridMode = false,
     },
   },
+})
+
+lsp.config("sql-language-server", {
+  on_init = on_init,
+  on_attach = on_attach_extended,
+  capabilities = cmp_capabilities,
+  filetypes = { "sql", "mysql" },
 })
