@@ -215,3 +215,10 @@ lsp.config("sql-language-server", {
   capabilities = cmp_capabilities,
   filetypes = { "sql", "mysql" },
 })
+
+lsp.config("html", {
+  on_init = on_init,
+  on_attach = on_attach_extended,
+  capabilities = cmp_capabilities,
+  filetypes = { "html", "css" },
+})
