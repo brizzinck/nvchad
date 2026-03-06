@@ -222,3 +222,10 @@ lsp.config("html", {
   capabilities = cmp_capabilities,
   filetypes = { "html", "css" },
 })
+
+lsp.config("typos-lsp", {
+  on_init = on_init,
+  on_attach = on_attach_extended,
+  capabilities = cmp_capabilities,
+  filetypes = { "*" },
+})
