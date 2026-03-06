@@ -45,13 +45,12 @@ end
 
 lsp.config("gopls", {
   cmd = { "gopls" },
-  root_dir = function(fname)
-    return root.find(vim.fn.bufnr(fname))
-  end,
+  root_markers = { "go.work", "go.mod", ".git" },
   filetypes = { "go", "gomod", "gowork", "gotmpl" },
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
+  single_file_support = true,
   settings = {
     gopls = {
       gofumpt = true,
@@ -220,12 +219,53 @@ lsp.config("html", {
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
-  filetypes = { "html", "css" },
+  filetypes = { "html", "css", "javascript" },
 })
 
-lsp.config("typos-lsp", {
+lsp.config("typos_lsp", {
+  cmd = { "typos-lsp" },
+  cmd_env = {
+    RUST_LOG = "error",
+  },
+
+  root_markers = {
+    ".git",
+    "typos.toml",
+    ".typos.toml",
+    "_typos.toml",
+  },
+
+  filetypes = {
+    "go",
+    "lua",
+    "python",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "markdown",
+    "html",
+    "css",
+  },
+
+  single_file_support = true,
+
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
-  filetypes = { "*" },
 })
+
+vim.lsp.enable "gopls"
+vim.lsp.enable "dotnet"
+vim.lsp.enable "protols"
+vim.lsp.enable "pyright"
+vim.lsp.enable "htmx-lsp"
+vim.lsp.enable "cssls"
+vim.lsp.enable "clangd"
+vim.lsp.enable "lua_ls"
+vim.lsp.enable "gradle_ls"
+vim.lsp.enable "prismals"
+vim.lsp.enable "vue_ls"
+vim.lsp.enable "sql-language-server"
+vim.lsp.enable "html"
+vim.lsp.enable "typos_lsp"
