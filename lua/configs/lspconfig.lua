@@ -222,6 +222,13 @@ lsp.config("html", {
   filetypes = { "html", "css", "javascript" },
 })
 
+lsp.config("marksman", {
+  on_init = on_init,
+  on_attach = on_attach_extended,
+  capabilities = cmp_capabilities,
+  filetypes = { "markdown" },
+})
+
 lsp.config("typos_lsp", {
   cmd = { "typos-lsp" },
   cmd_env = {
@@ -269,3 +276,4 @@ vim.lsp.enable "vue_ls"
 vim.lsp.enable "sql-language-server"
 vim.lsp.enable "html"
 vim.lsp.enable "typos_lsp"
+vim.lsp.enable "marksman"

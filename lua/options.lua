@@ -22,6 +22,26 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   end,
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "md" },
+  callback = function()
+    local opt = vim.opt_local
+    opt.wrap = true
+    opt.breakindent = true
+    opt.conceallevel = 2
+    opt.textwidth = 0
+    opt.wrapmargin = 0
+    opt.linebreak = true
+    opt.breakat = " \t;,!?"
+
+    vim.keymap.set("n", "<leader>mw", function()
+      local w = vim.opt_local.wrap:get()
+      vim.opt_local.wrap = not w
+      vim.notify("Markdown wrap: " .. (not w and "ON" or "OFF"))
+    end, { buffer = true, desc = "Toggle markdown wrap" })
+  end,
+})
+
 vim.api.nvim_create_autocmd("TermClose", {
   pattern = "*",
   callback = function(args)
