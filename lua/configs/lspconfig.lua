@@ -208,19 +208,26 @@ lsp.config("vue_ls", {
   },
 })
 
-lsp.config("sql-language-server", {
-  on_init = on_init,
-  on_attach = on_attach_extended,
-  capabilities = cmp_capabilities,
-  filetypes = { "sql", "mysql" },
-})
-
 lsp.config("html", {
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
   filetypes = { "html", "css", "javascript" },
 })
+
+lsp.config("starpls", {
+  on_init = on_init,
+  on_attach = on_attach_extended,
+  capabilities = cmp_capabilities,
+  filetypes = { "star" },
+  root_markers = { "WORKSPACE", "WORKSPACE.bazel", "MODULE.bazel", ".git" },
+})
+
+vim.filetype.add {
+  extension = {
+    star = "star",
+  },
+}
 
 lsp.config("marksman", {
   on_init = on_init,
@@ -273,7 +280,7 @@ vim.lsp.enable "lua_ls"
 vim.lsp.enable "gradle_ls"
 vim.lsp.enable "prismals"
 vim.lsp.enable "vue_ls"
-vim.lsp.enable "sql-language-server"
 vim.lsp.enable "html"
 vim.lsp.enable "typos_lsp"
 vim.lsp.enable "marksman"
+vim.lsp.enable "starpls"
