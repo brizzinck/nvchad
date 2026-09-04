@@ -83,11 +83,11 @@ return {
     dependencies = { "kristijanhusak/vim-dadbod-ui", "tpope/vim-dadbod", "hrsh7th/nvim-cmp" },
     config = function()
       local cmp = require "cmp"
-      cmp.setup {
-        sources = {
+      cmp.setup.filetype({ "sql" }, {
+        sources = cmp.config.sources {
           { name = "vim-dadbod-completion" },
         },
-      }
+      })
     end,
     ft = { "sql" },
   },
