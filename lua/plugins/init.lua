@@ -40,6 +40,12 @@ return {
   -- AI agent cockpit
   require "plugins.ai.sidekick",
   require "plugins.ai.claudecode",
+  require "plugins.ai.code_preview",
+  require "plugins.ai.codediff",
+  require "plugins.ai.mcphub",
+  require "plugins.ai.agentic",
+  require "plugins.ai.agentdash",
+  require "plugins.ai.workmux",
   -- unused
   -- require "plugins.wlclipboard",
   -- require "plugins.augment",

@@ -8,6 +8,13 @@ M.base46 = {
 
   statusline = {
     theme = "vscode_colored",
+    -- "agents" = agentdash segment (🤖 working / 💬 waiting / ✅ done)
+    order = { "mode", "file", "git", "%=", "lsp_msg", "%=", "agents", "diagnostics", "lsp", "cursor", "cwd" },
+    modules = {
+      agents = function()
+        return require("agentdash.statusline").render()
+      end,
+    },
   },
 
   hl_override = {
