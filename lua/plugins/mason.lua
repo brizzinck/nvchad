@@ -14,6 +14,11 @@ return {
       "js-debug-adapter",
 
       "gopls",
+      "golangci-lint",
+      "delve",
+      "gomodifytags",
+      "impl",
+      "gotests",
 
       "clangd",
       "clang-format",

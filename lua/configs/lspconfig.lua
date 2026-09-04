@@ -3,44 +3,17 @@ local root = require "utils.root"
 local cmp_capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities_default)
 cmp_capabilities.offsetEncoding = { "utf-16" }
 
+-- Buffer-local LSP keymaps. Global equivalents (K, gd, gD, gi/gI, gr, gy,
+-- <leader>lr, <leader>la, <leader>lf, <leader>ls ...) already live in
+-- mappings.lua; only bind here what isn't covered there, so a key has one
+-- clear meaning instead of two or three aliases.
 local function on_attach_extended(client, bufnr)
-  if on_attach_default then
-    on_attach_default(client, bufnr)
-  end
-
-  if client.server_capabilities.textDocumentSync then
-    require("vim.lsp._changetracking").init(client, bufnr)
-  end
-
   local function buf_map(mode, lhs, rhs, desc)
     vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
   end
 
-  buf_map("n", "K", vim.lsp.buf.hover, "Hover Documentation")
-  buf_map("n", "gd", vim.lsp.buf.definition, "Go to Definition")
-  buf_map("n", "gD", vim.lsp.buf.declaration, "Go to Declaration")
-  buf_map("n", "gi", vim.lsp.buf.implementation, "Go to Implementation")
-  buf_map("n", "gr", vim.lsp.buf.references, "Find References")
-  buf_map("n", "<leader>rn", vim.lsp.buf.rename, "Rename Symbol")
-  buf_map("n", "<leader>ca", vim.lsp.buf.code_action, "Code Action")
-
-  buf_map("n", "<leader>ra", vim.lsp.buf.code_action, "Code Action (Alt)")
-  buf_map("n", "<leader>rr", vim.lsp.buf.rename, "Rename Symbol (Alt)")
-  buf_map("n", "<leader>rf", function()
-    vim.lsp.buf.format { async = true }
-  end, "Format Document")
-  buf_map("n", "<leader>rh", vim.lsp.buf.hover, "Hover")
-  buf_map("n", "<leader>rs", vim.lsp.buf.signature_help, "Signature Help")
-  buf_map("n", "<leader>rd", vim.lsp.buf.definition, "Definition")
-  buf_map("n", "<leader>ri", vim.lsp.buf.implementation, "Implementation")
-  buf_map("n", "<leader>rR", vim.lsp.buf.references, "References")
   buf_map("n", "<leader>rc", vim.lsp.codelens.run, "Run CodeLens")
   buf_map("n", "<leader>cl", vim.lsp.codelens.run, "Run CodeLens (Alt)")
-  buf_map("n", "<leader>f", function()
-    vim.lsp.buf.format { async = true }
-  end, "Format Document (Alt)")
-
-  buf_map("n", "gt", vim.lsp.buf.type_definition, "Go to Type Definition")
 end
 
 lsp.config("gopls", {

@@ -8,7 +8,9 @@ return {
   require "plugins.lazygit",
   require "plugins.vim_be_good",
   require "plugins.neo_tree",
-  require "plugins.hop",
+  require "plugins.flash",
+  require "plugins.harpoon",
+  require "plugins.treesitter_textobjects",
   require "plugins.lint",
   require "plugins.everforerst",
   require "plugins.telescope",
@@ -35,6 +37,9 @@ return {
   require "plugins.nvterm",
   require "plugins.lazydocker",
   require "plugins.markdown",
+  -- AI agent cockpit
+  require "plugins.ai.sidekick",
+  require "plugins.ai.claudecode",
   -- unused
   -- require "plugins.wlclipboard",
   -- require "plugins.augment",

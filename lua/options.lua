@@ -58,6 +58,18 @@ vim.api.nvim_win_close = function(winid, force)
   pcall(original_close, winid, force)
 end
 
+vim.g.clipboard = {
+  name = "OSC 52",
+  copy = {
+    ["+"] = require("vim.ui.clipboard.osc52").copy "+",
+    ["*"] = require("vim.ui.clipboard.osc52").copy "*",
+  },
+  paste = {
+    ["+"] = require("vim.ui.clipboard.osc52").paste "+",
+    ["*"] = require("vim.ui.clipboard.osc52").paste "*",
+  },
+}
+
 -- vim.g.clipboard = {
 --   name = "osc52",
 --   copy = {

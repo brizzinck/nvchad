@@ -12,6 +12,9 @@ return {
             return vim.fn.getcwd()
           end,
         },
+        require "neotest-golang" {
+          go_test_args = { "-tags=integration_database_test" },
+        },
       },
     }
   end,
@@ -20,5 +23,6 @@ return {
     "nvim-treesitter/nvim-treesitter",
     "antoinemadec/FixCursorHold.nvim",
     "haydenmeade/neotest-jest",
+    "fredrikaverpil/neotest-golang",
   },
 }

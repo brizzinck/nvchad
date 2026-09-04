@@ -3,6 +3,7 @@ return {
   dependencies = {
     { "nvim-lua/plenary.nvim" },
     { "nvim-telescope/telescope-file-browser.nvim" },
+    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
   },
   config = function()
     local telescope = require "telescope"
@@ -16,10 +17,17 @@ return {
             },
           },
         },
+        fzf = {
+          fuzzy = true,
+          override_generic_sorter = true,
+          override_file_sorter = true,
+          case_mode = "smart_case",
+        },
       },
     }
     telescope.load_extension "file_browser"
+    telescope.load_extension "fzf"
 
-    vim.keymap.set("n", "<leader>fb", ":Telescope file_browser<CR>", { desc = "Open File Browser" })
+    vim.keymap.set("n", "<leader>fB", "<cmd>Telescope file_browser<CR>", { desc = "Open File Browser" })
   end,
 }

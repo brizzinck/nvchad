@@ -2,6 +2,16 @@ require "nvchad.mappings"
 
 local map = vim.keymap.set
 
+-- NvChad's defaults map bare <leader>b ("new buffer", redundant with our
+-- <leader>n below) and <leader>wK/<leader>wk (whichkey introspection) as
+-- prefixes. Since we also use <leader>b* (close buffers) and <leader>w
+-- (save) as leaves, Neovim was waiting timeoutlen after every <leader>b
+-- and <leader>w keypress to see if more chars were coming. Drop the rarely
+-- used NvChad leaves so our frequent ones fire instantly.
+pcall(vim.keymap.del, "n", "<leader>b")
+pcall(vim.keymap.del, "n", "<leader>wK")
+pcall(vim.keymap.del, "n", "<leader>wk")
+
 map("n", "<C-s>", "<cmd>silent! write!<CR>", { desc = "Force Write" })
 map("n", "<leader>q", "<cmd>q<CR>", { desc = "Force Quit" })
 map("n", "<leader>n", "<cmd>enew<CR>", { desc = "New File" })
@@ -236,8 +246,6 @@ map("n", "<leader>gb", "<cmd>Telescope git_branches<CR>", { desc = "Git Branches
 map("n", "<leader>gc", "<cmd>Telescope git_commits<CR>", { desc = "Git Commits (repo)" })
 map("n", "<leader>gC", "<cmd>Telescope git_bcommits<CR>", { desc = "Git Commits (current file)" })
 map("n", "<leader>gt", "<cmd>Telescope git_status<CR>", { desc = "Git Status" })
-map("n", "<leader>ls", "<cmd>Telescope lsp_document_symbols<CR>", { desc = "LSP Document Symbols" })
-map("n", "<leader>lG", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", { desc = "LSP Workspace Symbols" })
 
 map({ "n", "t" }, "<A-i>", function()
   require("nvterm.terminal").toggle "float"
@@ -259,14 +267,11 @@ map("n", "<leader>gg", function()
   vim.cmd "LazyGit"
 end, { desc = "Open LazyGit" })
 
-map("n", "<leader>ft", "<cmd>TodoTelescope<CR>", { desc = "Find Todo" })
+map("n", "<leader>fT", "<cmd>TodoTelescope<CR>", { desc = "Find Todo" })
 
-map("n", "<leader>qx", "<cmd>TroubleToggle<CR>", { desc = "Open Trouble" })
-map("n", "<leader>qw", "<cmd>TroubleToggle workspace_diagnostics<CR>", { desc = "Open Workspace Trouble" })
-map("n", "<leader>qd", "<cmd>TroubleToggle document_diagnostics<CR>", { desc = "Open Document Trouble" })
-map("n", "<leader>qq", "<cmd>TroubleToggle quickfix<CR>", { desc = "Open Quickfix" })
-map("n", "<leader>ql", "<cmd>TroubleToggle loclist<CR>", { desc = "Open Location List" })
-map("n", "<leader>qt", "<cmd>TodoTrouble<CR>", { desc = "Open Todo Trouble" })
+-- Trouble v3 keymaps (and the old <leader>q* Trouble binds that used to
+-- shadow the bare <leader>q Force Quit leaf, delaying it by timeoutlen)
+-- now live in plugins/trouble.lua as a lazy `keys` spec, under <leader>x.
 
 map("n", "<leader>tt", function()
   require("neotest").run.run()
@@ -282,8 +287,8 @@ end, { desc = "Open full-screen terminal in new tab" })
 
 map("n", "<leader>gl", "<cmd>Flog<CR>", { desc = "Git Log" })
 map("n", "<leader>gf", "<cmd>DiffviewFileHistory<CR>", { desc = "Git File History" })
-map("n", "<leader>gc", "<cmd>DiffviewOpen HEAD~1<CR>", { desc = "Git Last Commit" })
-map("n", "<leader>gt", "<cmd>DiffviewToggleFile<CR>", { desc = "Git File History" })
+map("n", "<leader>gD", "<cmd>DiffviewOpen HEAD~1<CR>", { desc = "Git Last Commit Diff" })
+map("n", "<leader>gv", "<cmd>DiffviewToggleFile<CR>", { desc = "Diffview Toggle File Panel" })
 
 map("n", "<M-1>", "<cmd>tabnext 1<CR>", { desc = "Go to tab 1" })
 map("n", "<M-2>", "<cmd>tabnext 2<CR>", { desc = "Go to tab 2" })
@@ -300,6 +305,12 @@ map("v", "<S-Tab>", "<gv", { desc = "Indent left" })
 map("x", "<Tab>", ">gv", { desc = "Indent block right" })
 map("x", "<S-Tab>", "<gv", { desc = "Indent block left" })
 
-map("n", "<leader>ae", "<cmd>Copilot enable<CR>", { desc = "Enable copilot" })
-map("n", "<leader>ad", "<cmd>Copilot disable<CR>", { desc = "Disable copilot" })
-map("n", "<leader>ac", "<cmd>CopilotChat<CR>", { desc = "Toggle Copilot Chat" })
+-- <leader>a* = AI cockpit. Keys live next to their plugins in lua/plugins/ai/*.lua
+-- (sidekick, claudecode, agentic, review, agentdash, mcphub, workmux). Only the
+-- which-key group labels are declared here.
+pcall(function()
+  require("which-key").add {
+    { "<leader>a", group = "AI agents" },
+    { "<leader>aw", group = "AI worktrees" },
+  }
+end)
