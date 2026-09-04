@@ -37,6 +37,8 @@ return {
   require "plugins.nvterm",
   require "plugins.lazydocker",
   require "plugins.markdown",
+  require "plugins.image",
+  require "plugins.yazi",
   -- AI agent cockpit
   require "plugins.ai.sidekick",
   require "plugins.ai.claudecode",
@@ -49,5 +51,4 @@ return {
   -- unused
   -- require "plugins.wlclipboard",
   -- require "plugins.augment",
-  -- require "plugins.copilot",
 }

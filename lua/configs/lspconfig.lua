@@ -250,10 +250,3 @@ vim.lsp.enable "sql-language-server"
 vim.lsp.enable "html"
 vim.lsp.enable "typos_lsp"
 vim.lsp.enable "marksman"
-
--- GitHub Copilot LSP: powers sidekick.nvim Next Edit Suggestions (<Tab> in normal mode).
--- Inline ghost-text completion is left off so it doesn't fight nvim-cmp.
-lsp.config("copilot", {
-  on_attach = on_attach_extended,
-})
-vim.lsp.enable "copilot"

@@ -1,6 +1,6 @@
 -- agentdash.install: wire agent hooks (Claude Code + Codex) globally, without clobbering
--- anything else in the settings files. Also installs code-preview.nvim's hooks globally
--- (its own installer only writes per-project .claude/settings.local.json).
+-- anything else in the settings files. code-preview.nvim hooks are NOT installed for
+-- Claude Code here (use :CodePreviewInstallClaudeCodeHooks per project); Codex still gets them.
 local M = {}
 
 local HOOK_BIN = vim.fn.expand "~/.local/bin/agentdash-hook"
@@ -126,16 +126,6 @@ function M.install_claude()
   local cmd = "AGENTDASH_AGENT=claude " .. HOOK_BIN
   for _, ev in ipairs(EVENTS) do
     if add_hook(data, ev, "*", cmd, "agentdash-hook") then
-      added = added + 1
-    end
-  end
-  local cp = code_preview_entry()
-  if cp then
-    local m = "Edit|Write|MultiEdit|Bash|PowerShell"
-    if add_hook(data, "PreToolUse", m, cp .. " claudecode pre", "hook-entry") then
-      added = added + 1
-    end
-    if add_hook(data, "PostToolUse", m, cp .. " claudecode post", "hook-entry") then
       added = added + 1
     end
   end

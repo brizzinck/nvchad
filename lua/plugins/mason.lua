@@ -20,8 +20,6 @@ return {
       "impl",
       "gotests",
 
-      "copilot-language-server",
-
       "clangd",
       "clang-format",
 

@@ -4,7 +4,7 @@
 -- that share the base tool's command; each gets its own tmux window.
 local M = {}
 
-local BASE_TOOLS = { "claude", "codex", "gemini", "copilot" }
+local BASE_TOOLS = { "claude", "codex", "gemini" }
 
 local function base_cmd(tool)
   local ok, Tool = pcall(require, "sidekick.cli.tool")
