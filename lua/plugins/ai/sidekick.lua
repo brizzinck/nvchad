@@ -21,6 +21,15 @@ return {
         enabled = true,
         create = "window",
       },
+      -- Every CLI launched fully unattended: no permission/approval prompts, ever.
+      -- Diffs/output are still reviewable afterwards via <leader>ar (codediff) and the
+      -- agentdash sidebar — this only removes the interactive "may I?" step.
+      tools = {
+        claude = { cmd = { "claude", "--permission-mode", "bypassPermissions" } },
+        codex = { cmd = { "codex", "--dangerously-bypass-approvals-and-sandbox" } },
+        gemini = { cmd = { "gemini", "--yolo" } },
+        copilot = { cmd = { "copilot", "--banner", "--allow-all" } },
+      },
       prompts = {
         gotest = "Write table-driven Go tests for {function} in {file}. Follow project conventions (testify require/assert, when/then subtests).",
         golint = "Fix these lint findings without changing behaviour:\n{diagnostics_all}",
