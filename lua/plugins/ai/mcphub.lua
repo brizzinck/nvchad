@@ -5,7 +5,8 @@ return {
   "ravitemer/mcphub.nvim",
   dependencies = { "nvim-lua/plenary.nvim" },
   build = "npm install -g mcp-hub@latest",
-  cmd = { "MCPHub" },
+  -- eager: Claude/Codex point at localhost:37373, so the hub must be up whenever nvim is
+  event = "VeryLazy",
   keys = {
     { "<leader>am", "<cmd>MCPHub<cr>", desc = "AI: MCP hub" },
   },
