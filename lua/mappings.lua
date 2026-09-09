@@ -297,6 +297,28 @@ map("v", "<S-Tab>", "<gv", { desc = "Indent left" })
 map("x", "<Tab>", ">gv", { desc = "Indent block right" })
 map("x", "<S-Tab>", "<gv", { desc = "Indent block left" })
 
+-- Media playback: mpv as a native Hyprland window (lua/utils/mpv.lua), not
+-- terminal glyph art -- real per-pixel video via mpv's own GPU renderer.
+map("n", "<leader>mp", function()
+  vim.ui.input({ prompt = "mpv: ", completion = "file", default = vim.fn.expand "%:p" }, function(input)
+    if input then require("utils.mpv").open(input) end
+  end)
+end, { desc = "Media: play file/URL" })
+map("n", "<leader>mo", function()
+  local target = vim.fn.expand "<cfile>"
+  if target == "" then
+    vim.notify("mpv: no filename/URL under cursor", vim.log.levels.WARN)
+    return
+  end
+  require("utils.mpv").open(target)
+end, { desc = "Media: play file under cursor" })
+map("n", "<leader>mt", function()
+  require("utils.mpv").toggle()
+end, { desc = "Media: toggle player window" })
+map("n", "<leader>mq", function()
+  require("utils.mpv").stop()
+end, { desc = "Media: stop player" })
+
 -- <leader>a* = AI cockpit. Keys live next to their plugins in lua/plugins/ai/*.lua
 -- (sidekick, claudecode, agentic, review, agentdash, mcphub, workmux). Only the
 -- which-key group labels are declared here.
