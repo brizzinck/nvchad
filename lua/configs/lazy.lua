@@ -1,5 +1,8 @@
 return {
   defaults = { lazy = true },
+  -- Auto-reload on config edits pops a blocking "Press ENTER" prompt in every running nvim, which
+  -- stops answering RPC and hangs agent hooks (code-preview). Changes apply on next start instead.
+  change_detection = { enabled = false, notify = false },
   install = { colorscheme = { "nvchad" } },
 
   ui = {
