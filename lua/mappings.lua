@@ -320,7 +320,7 @@ map("n", "<leader>mq", function()
 end, { desc = "Media: stop player" })
 
 -- <leader>a* = AI cockpit. Keys live next to their plugins in lua/plugins/ai/*.lua
--- (sidekick, claudecode, agentic, review, agentdash, mcphub, workmux). Only the
+-- (sidekick, agentic, review, agentdash, mcphub, workmux). Only the
 -- which-key group labels are declared here.
 pcall(function()
   require("which-key").add {

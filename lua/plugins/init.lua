@@ -41,7 +41,6 @@ return {
   require "plugins.yazi",
   -- AI agent cockpit
   require "plugins.ai.sidekick",
-  require "plugins.ai.claudecode",
   require "plugins.ai.code_preview",
   require "plugins.ai.codediff",
   require "plugins.ai.mcphub",

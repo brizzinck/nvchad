@@ -1,5 +1,4 @@
 -- sidekick.nvim: AI CLIs (claude/codex/gemini) in persistent tmux windows.
--- Claude's IDE bridge is claudecode.nvim.
 return {
   "folke/sidekick.nvim",
   event = "VeryLazy",
