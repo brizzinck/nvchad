@@ -4,6 +4,39 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.termguicolors = true
 vim.opt.wrap = false
+vim.opt.undolevels = 300
+vim.opt.synmaxcol = 300
+
+-- Big files: treesitter + cmp buffer source + ibl + undo on a 50 MB log/JSON easily pushes nvim past 1 GB.
+local BIGFILE = 1.5 * 1024 * 1024
+vim.api.nvim_create_autocmd("BufReadPre", {
+  group = vim.api.nvim_create_augroup("bigfile", { clear = true }),
+  callback = function(a)
+    local st = vim.uv.fs_stat(a.match)
+    if not (st and st.size > BIGFILE) then
+      return
+    end
+    vim.b[a.buf].bigfile = true
+    vim.bo[a.buf].undolevels = -1
+    vim.bo[a.buf].swapfile = false
+    vim.bo[a.buf].undofile = false
+    vim.wo.foldmethod = "manual"
+    vim.wo.spell = false
+    vim.api.nvim_create_autocmd("FileType", {
+      buffer = a.buf,
+      once = true,
+      callback = function()
+        vim.schedule(function()
+          if vim.api.nvim_buf_is_valid(a.buf) then
+            pcall(vim.treesitter.stop, a.buf)
+            vim.bo[a.buf].syntax = "off"
+            pcall(vim.cmd, "IBLDisable")
+          end
+        end)
+      end,
+    })
+  end,
+})
 
 vim.diagnostic.config {
   signs = {

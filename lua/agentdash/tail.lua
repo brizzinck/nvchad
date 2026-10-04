@@ -65,7 +65,8 @@ local function read_new(from_start)
   end
   partial = data:sub(last_nl + 1)
   for line in data:sub(1, last_nl):gmatch "([^\n]*)\n" do
-    if line ~= "" then
+    -- oversized lines are legacy un-slimmed events (see hook.sh); decoding them just bloats the heap
+    if line ~= "" and #line < 65536 then
       local ok, ev = pcall(vim.json.decode, line)
       if ok and store.apply(ev) then
         changed = true

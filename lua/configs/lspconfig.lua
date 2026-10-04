@@ -1,6 +1,10 @@
 local lsp = vim.lsp
+
+-- nvim only sends `shutdown` on exit and never kills the server; without a timeout node/gopls
+-- servers outlive nvim as orphans (100-800 MB each). SIGTERM after 1.5s if still alive.
+lsp.config("*", { exit_timeout = 1500 })
 local root = require "utils.root"
-local cmp_capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities_default)
+local cmp_capabilities = require("cmp_nvim_lsp").default_capabilities()
 cmp_capabilities.offsetEncoding = { "utf-16" }
 
 -- Buffer-local LSP keymaps. Global equivalents (K, gd, gD, gi/gI, gr, gy,
@@ -17,7 +21,8 @@ local function on_attach_extended(client, bufnr)
 end
 
 lsp.config("gopls", {
-  cmd = { "gopls" },
+  -- -remote=auto: one shared gopls daemon per workspace instead of one per nvim (exits ~1 min after last client)
+  cmd = { "gopls", "-remote=auto" },
   root_markers = { "go.work", "go.mod", ".git" },
   filetypes = { "go", "gomod", "gowork", "gotmpl" },
   on_init = on_init,
@@ -29,15 +34,8 @@ lsp.config("gopls", {
       gofumpt = true,
       completeUnimported = true,
       usePlaceholders = true,
-      hints = {
-        assignVariableTypes = true,
-        compositeLiteralFields = true,
-        compositeLiteralTypes = true,
-        constantValues = true,
-        functionTypeParameters = true,
-        parameterNames = true,
-        rangeVariableTypes = true,
-      },
+      directoryFilters = { "-**/node_modules", "-**/.git", "-**/vendor" },
+      semanticTokens = false,
       analyses = {
         unusedparams = true,
       },
@@ -74,7 +72,6 @@ lsp.config("dotnet", {
 lsp.config("protols", {
   cmd = { "protols" },
   filetypes = { "proto" },
-  filetypes = { "proto" },
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
@@ -89,22 +86,12 @@ lsp.config("pyright", {
       analysis = {
         typeCheckingMode = "basic",
         autoSearchPaths = true,
-        useLibraryCodeForTypes = true,
-        inlayHints = {
-          functionReturnTypes = true,
-          variableTypes = true,
-          parameterNames = true,
-        },
+        diagnosticMode = "openFilesOnly",
+        useLibraryCodeForTypes = false,
+        exclude = { "**/node_modules", "**/.venv", "**/__pycache__" },
       },
     },
   },
-})
-
-lsp.config("htmx-lsp", {
-  on_init = on_init,
-  on_attach = on_attach_extended,
-  capabilities = cmp_capabilities,
-  filetypes = { "html", "css", "js" },
 })
 
 lsp.config("cssls", {
@@ -114,7 +101,7 @@ lsp.config("cssls", {
 })
 
 lsp.config("clangd", {
-  cmd = { "clangd", "--background-index", "--clang-tidy" },
+  cmd = { "clangd", "--background-index", "--clang-tidy", "-j=2", "--background-index-priority=low", "--malloc-trim", "--pch-storage=disk" },
   filetypes = { "c", "cpp", "objc", "objcpp" },
   on_init = on_init,
   on_attach = function(client, bufnr)
@@ -147,8 +134,11 @@ lsp.config("lua_ls", {
         globals = { "vim" },
       },
       workspace = {
-        library = vim.api.nvim_get_runtime_file("", true),
+        -- indexing the whole runtimepath (~90 plugin dirs) costs 0.5-1.5 GB per lua_ls
+        library = { vim.env.VIMRUNTIME, "${3rd}/luv/library" },
         checkThirdParty = false,
+        maxPreload = 2000,
+        preloadFileSize = 200,
       },
       telemetry = {
         enable = false,
@@ -173,7 +163,7 @@ lsp.config("vue_ls", {
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
-  filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+  filetypes = { "vue" }, -- no ts plugin to pair with, so JS/TS buffers only spawned a useless node process
   init_options = {
     vue = {
       hybridMode = false,
@@ -181,18 +171,11 @@ lsp.config("vue_ls", {
   },
 })
 
-lsp.config("sql-language-server", {
-  on_init = on_init,
-  on_attach = on_attach_extended,
-  capabilities = cmp_capabilities,
-  filetypes = { "sql", "mysql" },
-})
-
 lsp.config("html", {
   on_init = on_init,
   on_attach = on_attach_extended,
   capabilities = cmp_capabilities,
-  filetypes = { "html", "css", "javascript" },
+  filetypes = { "html" },
 })
 
 lsp.config("marksman", {
@@ -239,14 +222,12 @@ vim.lsp.enable "gopls"
 vim.lsp.enable "dotnet"
 vim.lsp.enable "protols"
 vim.lsp.enable "pyright"
-vim.lsp.enable "htmx-lsp"
 vim.lsp.enable "cssls"
 vim.lsp.enable "clangd"
 vim.lsp.enable "lua_ls"
 vim.lsp.enable "gradle_ls"
 vim.lsp.enable "prismals"
 vim.lsp.enable "vue_ls"
-vim.lsp.enable "sql-language-server"
 vim.lsp.enable "html"
 vim.lsp.enable "typos_lsp"
 vim.lsp.enable "marksman"

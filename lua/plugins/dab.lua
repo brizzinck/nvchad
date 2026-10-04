@@ -7,13 +7,12 @@ return {
     "leoluz/nvim-dap-go",
     "jay-babu/mason-nvim-dap.nvim",
   },
-  event = "VeryLazy",
+  keys = { "<leader>du", "<leader>dt", "<leader>dl" }, -- mappings.lua dap keys load it via require("dap")
   config = function()
     local dap, dapui = require "dap", require "dapui"
 
     require("mason-nvim-dap").setup {
       ensure_installed = { "delve" },
-      automatic_installation = true,
       handlers = {},
     }
 

@@ -17,6 +17,7 @@ return {
     port = 37373,
     config = "/srv/mcphub/servers.json",
     auto_approve = false,
+    shutdown_delay = 10 * 1000, -- default 5 min keeps hub + all MCP children alive after the last nvim exits
     native_servers = {},
   },
 }

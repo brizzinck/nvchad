@@ -18,10 +18,21 @@ function M.setup(opts)
   -- elapsed-time ticker while the sidebar is visible
   local timer = vim.uv.new_timer()
   timer:start(5000, 5000, vim.schedule_wrap(function()
+    require("agentdash.store").prune(3600) -- ended sessions keep prompt/last_msg strings forever otherwise
     if ui.is_open() then
       ui.redraw()
     end
   end))
+  vim.api.nvim_create_autocmd("VimLeavePre", {
+    group = vim.api.nvim_create_augroup("agentdash_cleanup", { clear = true }),
+    callback = function()
+      tail.stop()
+      if not timer:is_closing() then
+        timer:stop()
+        timer:close()
+      end
+    end,
+  })
 
   vim.api.nvim_create_user_command("AgentDash", function(a)
     ui.toggle { float = a.args == "float" }

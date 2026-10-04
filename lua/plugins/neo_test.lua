@@ -1,6 +1,6 @@
 return {
   "nvim-neotest/neotest",
-  event = "VeryLazy",
+  cmd = "Neotest", -- mappings.lua calls require("neotest"), which lazy-loads it too
   config = function()
     require("neotest").setup {
       adapters = {
