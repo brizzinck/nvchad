@@ -1,7 +1,7 @@
 -- Headless bootstrap, run by dotfiles/install.sh after `stow .`:
 --   nvim --headless -c "luafile ~/.config/nvim/scripts/bootstrap.lua"
 -- Installs plugins pinned in lazy-lock.json, Mason tools, treesitter parsers and the
--- agent hooks (agentdash + code-preview) for Claude Code / Codex. Idempotent.
+-- agentdash hooks for Claude Code / Codex. Idempotent.
 local function log(msg)
   io.stdout:write("[nvim-bootstrap] " .. msg .. "\n")
   io.stdout:flush()
@@ -69,7 +69,7 @@ step("treesitter parsers", function()
   end
 end)
 
-step("agent hooks (agentdash + code-preview → Claude Code / Codex)", function()
+step("agent hooks (agentdash → Claude Code / Codex)", function()
   require("agentdash.install").run()
 end)
 

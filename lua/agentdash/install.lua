@@ -1,6 +1,5 @@
 -- agentdash.install: wire agent hooks (Claude Code + Codex) globally, without clobbering
--- anything else in the settings files. code-preview.nvim hooks are NOT installed for
--- Claude Code here (use :CodePreviewInstallClaudeCodeHooks per project); Codex still gets them.
+-- anything else in the settings files. Hooks left by the removed code-preview.nvim are dropped.
 local M = {}
 
 local HOOK_BIN = vim.fn.expand "~/.local/bin/agentdash-hook"
@@ -104,19 +103,28 @@ local function add_hook(data, event, matcher, command, marker)
   return true
 end
 
+--- Drop every hook entry whose command contains `needle` (and events left empty).
+--- Returns the number of entries removed.
+local function remove_hooks(data, needle)
+  local removed = 0
+  for event, entries in pairs(data.hooks or {}) do
+    local kept = {}
+    for _, entry in ipairs(entries) do
+      if has_command({ entry }, needle) then
+        removed = removed + 1
+      else
+        table.insert(kept, entry)
+      end
+    end
+    data.hooks[event] = #kept > 0 and kept or nil
+  end
+  return removed
+end
+
 local function install_hook_bin()
   vim.fn.mkdir(vim.fn.fnamemodify(HOOK_BIN, ":h"), "p")
   vim.fn.writefile(vim.fn.readfile(HOOK_SRC), HOOK_BIN)
   vim.fn.setfperm(HOOK_BIN, "rwxr-xr-x")
-end
-
-local function code_preview_entry()
-  local ok, lazy = pcall(require, "lazy.core.config")
-  local plugin = ok and lazy.plugins["code-preview.nvim"]
-  if not plugin then
-    return nil
-  end
-  return plugin.dir .. "/bin/hook-entry.sh"
 end
 
 function M.install_claude()
@@ -129,10 +137,11 @@ function M.install_claude()
       added = added + 1
     end
   end
+  added = added + remove_hooks(data, "code-preview.nvim")
   if added > 0 then
     local bak = backup(path)
     write_json(path, data)
-    return string.format("claude: %d hook entries added (backup: %s)", added, bak or "none")
+    return string.format("claude: %d hook entries changed (backup: %s)", added, bak or "none")
   end
   return "claude: hooks already installed"
 end
@@ -147,19 +156,11 @@ function M.install_codex()
       added = added + 1
     end
   end
-  local cp = code_preview_entry()
-  if cp then
-    if add_hook(data, "PreToolUse", "", cp .. " codex pre", "hook-entry") then
-      added = added + 1
-    end
-    if add_hook(data, "PostToolUse", "", cp .. " codex post", "hook-entry") then
-      added = added + 1
-    end
-  end
+  added = added + remove_hooks(data, "code-preview.nvim")
   if added > 0 then
     local bak = backup(path)
     write_json(path, data)
-    return string.format("codex: %d hook entries added (backup: %s)", added, bak or "none")
+    return string.format("codex: %d hook entries changed (backup: %s)", added, bak or "none")
   end
   return "codex: hooks already installed"
 end
