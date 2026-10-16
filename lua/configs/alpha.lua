@@ -20,11 +20,12 @@ dashboard.section.buttons.val = {
 }
 
 dashboard.section.footer.val = {
-  "💻 Welcome, " .. user .. "!",
+  "\u{f007}  " .. user,
 }
 
-dashboard.section.header.opts.hl = "Keyword"
-dashboard.section.buttons.opts.hl = "Function"
-dashboard.section.footer.opts.hl = "Type"
+-- AlphaHeader (purple, echoes the wallpaper) is defined in chadrc.lua; no big red "error" block
+dashboard.section.header.opts.hl = "AlphaHeader"
+dashboard.section.buttons.opts.hl = "Normal"
+dashboard.section.footer.opts.hl = "Comment"
 
 require("alpha").setup(dashboard.config)

@@ -1,14 +1,19 @@
 return {
   "rcarriga/nvim-notify",
-  config = function()
-    vim.notify = require "notify"
-    vim.notify.setup {
-      stages = "fade_in_slide_out",
-      timeout = 3000,
-      render = "compact",
-      max_width = 50,
-      minimum_width = 30,
-      top_down = false,
-    }
+  -- defaults.lazy = true and no trigger meant this never loaded and vim.notify stayed the stock one
+  event = "VeryLazy",
+  opts = {
+    stages = "static", -- no slide animation: snappy
+    timeout = 3000,
+    render = "wrapped-compact",
+    max_width = 60,
+    minimum_width = 30,
+    top_down = false,
+    background_colour = "#000000",
+  },
+  config = function(_, opts)
+    local notify = require "notify"
+    notify.setup(opts)
+    vim.notify = notify
   end,
 }

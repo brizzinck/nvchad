@@ -6,6 +6,8 @@ return {
   install = { colorscheme = { "nvchad" } },
 
   ui = {
+    border = "rounded",
+    backdrop = 100,
     icons = {
       ft = "",
       lazy = "󰂠 ",

@@ -10,7 +10,7 @@ return {
             col = 0.08,
             width = 0.9,
             height = 0.9,
-            border = "single",
+            border = "rounded",
           },
           horizontal = { location = "rightbelow", split_ratio = 0.3 },
           vertical = { location = "rightbelow", split_ratio = 0.5 },

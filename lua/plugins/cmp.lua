@@ -43,6 +43,13 @@ return {
           end
         end, { "i", "s" }),
       },
+      window = {
+        completion = cmp.config.window.bordered {
+          border = "rounded",
+          winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+        },
+        documentation = cmp.config.window.bordered { border = "rounded" },
+      },
       sources = cmp.config.sources {
         { name = "nvim_lsp" },
         { name = "luasnip" },
