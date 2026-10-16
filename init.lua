@@ -40,4 +40,6 @@ require "nvchad.autocmds"
 
 vim.schedule(function()
   require "mappings"
+  -- Cyrillic twins for the mappings that exist by now (the keymap API hook already covers the later ones)
+  require("configs.langmapper").automapping()
 end)

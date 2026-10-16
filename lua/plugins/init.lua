@@ -38,6 +38,7 @@ return {
   require "plugins.lazydocker",
   require "plugins.markdown",
   require "plugins.image",
+  require "plugins.langmapper",
   require "plugins.yazi",
   -- AI agent cockpit
   require "plugins.ai.sidekick",
