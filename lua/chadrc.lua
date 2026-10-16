@@ -1,103 +1,172 @@
 ---@type ChadrcConfig
 
--- palette: everforest-black (~/dotfiles/themes/static/everforest-black)
+-- Palette: Everforest, variants "black" (pure #000000, default) and "night" (near-black).
+-- Tokens come from ~/dotfiles/themes/palette (see lua/palette.lua); `theme black|night` switches variants.
+-- Without tokens (no dotfiles checkout) this stays stock base46 everforest.
 local M = {}
 
 M.base46 = {
   theme = "everforest",
-  transparency = false, -- real #000000 via changed_themes below, with visible surfaces and borders
+  transparency = false, -- real bg and visible surfaces come from changed_themes below
+}
 
-  changed_themes = {
+local data = require("palette").get()
+
+if data then
+  local t = data.tokens
+
+  M.base46.changed_themes = {
     everforest = {
       base_30 = {
-        black = "#000000",
-        darker_black = "#000000",
-        black2 = "#0b0e0d",
-        one_bg = "#0b0e0d",
-        one_bg2 = "#141a17",
-        one_bg3 = "#1f2a24",
-        grey = "#3a4440",
-        grey_fg = "#4e5a54",
-        grey_fg2 = "#5f6b65",
-        light_grey = "#6b7770",
-        line = "#222a27",
-        statusline_bg = "#000000",
-        lightbg = "#141a17",
-        pmenu_bg = "#a7c080",
+        white = t.fg,
+        darker_black = t.bg,
+        black = t.bg,
+        black2 = t.surface,
+        one_bg = t.surface,
+        one_bg2 = t.raised,
+        one_bg3 = t.select,
+        grey = t.border,
+        grey_fg = t.muted,
+        grey_fg2 = t.muted,
+        light_grey = t.subtext,
+        line = t.line,
+        statusline_bg = t.bg,
+        lightbg = t.raised,
+        red = t.red,
+        baby_pink = t.red_br,
+        pink = t.purple_br,
+        green = t.green,
+        vibrant_green = t.green_br,
+        blue = t.blue,
+        nord_blue = t.blue,
+        folder_bg = t.blue,
+        teal = t.aqua,
+        cyan = t.aqua_br,
+        yellow = t.yellow,
+        sun = t.yellow_br,
+        orange = t.orange,
+        purple = t.purple_br,
+        dark_purple = t.purple,
+        pmenu_bg = t.green,
       },
       base_16 = {
-        base00 = "#000000",
-        base01 = "#0b0e0d",
-        base02 = "#1f2a24",
-        base03 = "#3a4440",
+        base00 = t.bg,
+        base01 = t.surface,
+        base02 = t.select,
+        base03 = t.border,
+        base04 = t.muted,
+        base05 = t.fg,
+        base06 = t.fg,
+        base07 = t.fg_hi,
+        base08 = t.blue, -- identifiers, properties, parameters
+        base09 = t.purple, -- numbers, constants
+        base0A = t.aqua, -- types
+        base0B = t.yellow, -- strings
+        base0C = t.orange, -- escapes, tags
+        base0D = t.green, -- functions, titles, directories
+        base0E = t.red, -- keywords
+        base0F = t.purple,
       },
     },
-  },
+  }
 
-  -- hl_override only touches groups that a base46 integration already defines
-  hl_override = {
-    Comment = { fg = "#5f875f", italic = true },
-    ["@comment"] = { fg = "#5f875f", italic = true },
-    CursorLine = { bg = "#0b0e0d" },
-    Visual = { bg = "#2a3530" },
-    FloatBorder = { fg = "#3a4440", bg = "NONE" },
-    WinSeparator = { fg = "#222a27" },
-    TelescopeBorder = { fg = "#3a4440" },
-    TelescopePromptBorder = { fg = "#3a4440" },
-    ErrorMsg = { fg = "#e67e80", bg = "NONE", bold = true },
-    WarningMsg = { fg = "#dbbc7f", bg = "NONE" },
-    DiffChange = { bg = "#1c2a2a", fg = "none" },
-    DiffAdd = { bg = "#16261a", fg = "none" },
-    DiffRemoved = { bg = "#2c1416", fg = "none" },
+  -- Groups that must carry palette colours whether or not a base46 integration defines them:
+  -- the table is used for hl_override (groups base46 defines) and hl_add (groups it does not).
+  local shared = {
+    Comment = { fg = t.comment, italic = true },
+    ["@comment"] = { fg = t.comment, italic = true },
+    CursorLine = { bg = t.surface },
+    Visual = { bg = t.visual },
+    LspReferenceText = { bg = t.visual },
+    LspReferenceRead = { bg = t.visual },
+    LspReferenceWrite = { bg = t.visual },
+    FloatBorder = { fg = t.border, bg = "NONE" },
+    WinSeparator = { fg = t.line },
+    TelescopeBorder = { fg = t.border },
+    TelescopePromptBorder = { fg = t.border },
+    TelescopeSelection = { bg = t.select },
+    TelescopeMatching = { fg = t.green, bold = true },
+    CmpItemAbbrMatch = { fg = t.green, bold = true },
+    BlinkCmpLabelMatch = { fg = t.green, bold = true },
+    StatusLine = { fg = t.subtext, bg = t.bg },
 
-    -- diagnostics on the Everforest Black accents (info blue, hint aqua; base46 uses green/purple)
-    DiagnosticError = { fg = "#e67e80" },
-    DiagnosticWarn = { fg = "#dbbc7f" },
-    DiagnosticInfo = { fg = "#7fbbb3" },
-    DiagnosticHint = { fg = "#83c092" },
+    -- base46 paints Error with base08 (= blue) as a background, which shows errors as a blue block
+    Error = { fg = t.red, bg = t.error_bg },
+    ErrorMsg = { fg = t.red, bg = "NONE", bold = true },
+    WarningMsg = { fg = t.yellow, bg = "NONE" },
+
+    -- search: blue = match, yellow = the current one (tmux copy mode uses the same pair)
+    Search = { fg = t.bg, bg = t.blue },
+    IncSearch = { fg = t.bg, bg = t.yellow },
+    CurSearch = { fg = t.bg, bg = t.yellow, bold = true },
+
+    DiffAdd = { bg = t.diff_add_bg, fg = "NONE" },
+    DiffAdded = { bg = t.diff_add_bg, fg = "NONE" },
+    DiffDelete = { fg = t.red, bg = t.diff_del_bg },
+    DiffRemoved = { bg = t.diff_del_bg, fg = "NONE" },
+    DiffChange = { bg = t.diff_chg_bg, fg = "NONE" },
+    DiffText = { bg = t.diff_chg_word, fg = "NONE" },
+    GitSignsAdd = { fg = t.green },
+    GitSignsChange = { fg = t.yellow },
+    GitSignsDelete = { fg = t.red },
+
+    -- diagnostics: error red, warn yellow, info blue, hint aqua (base46 uses green/purple for info/hint)
+    DiagnosticError = { fg = t.red },
+    DiagnosticWarn = { fg = t.yellow },
+    DiagnosticInfo = { fg = t.blue },
+    DiagnosticHint = { fg = t.aqua },
+    DiagnosticVirtualTextError = { fg = t.red, bg = t.error_bg },
+    DiagnosticVirtualTextWarn = { fg = t.yellow, bg = t.warn_bg },
+    DiagnosticVirtualTextInfo = { fg = t.blue, bg = t.info_bg },
+    DiagnosticVirtualTextHint = { fg = t.aqua, bg = t.hint_bg },
+    DiagnosticUnnecessary = { fg = t.muted },
+    DiagnosticUnderlineError = { undercurl = true, sp = t.red },
+    DiagnosticUnderlineWarn = { undercurl = true, sp = t.yellow },
+    DiagnosticUnderlineInfo = { undercurl = true, sp = t.blue },
+    DiagnosticUnderlineHint = { undercurl = true, sp = t.aqua },
 
     -- statusline (vscode_colored): coloured text on a quiet surface, no bright blocks
-    St_NormalMode = { fg = "#a7c080", bg = "#141a17" },
-    St_InsertMode = { fg = "#7fbbb3", bg = "#141a17" },
-    St_VisualMode = { fg = "#d699b6", bg = "#141a17" },
-    St_ReplaceMode = { fg = "#e67e80", bg = "#141a17" },
-    St_CommandMode = { fg = "#dbbc7f", bg = "#141a17" },
-    St_TerminalMode = { fg = "#83c092", bg = "#141a17" },
-    St_NTerminalMode = { fg = "#dbbc7f", bg = "#141a17" },
-    St_SelectMode = { fg = "#d699b6", bg = "#141a17" },
-    St_ConfirmMode = { fg = "#e69875", bg = "#141a17" },
-    St_cwd = { fg = "#859289", bg = "#141a17" }, -- was red, which means "error" in this palette
-    St_LspHints = { fg = "#83c092" },
-    St_LspMsg = { fg = "#859289" },
-  },
+    St_NormalMode = { fg = t.green, bg = t.raised },
+    St_InsertMode = { fg = t.blue, bg = t.raised },
+    St_VisualMode = { fg = t.purple, bg = t.raised },
+    St_ReplaceMode = { fg = t.red, bg = t.raised },
+    St_CommandMode = { fg = t.yellow, bg = t.raised },
+    St_TerminalMode = { fg = t.aqua, bg = t.raised },
+    St_NTerminalMode = { fg = t.yellow, bg = t.raised },
+    St_SelectMode = { fg = t.purple, bg = t.raised },
+    St_ConfirmMode = { fg = t.orange, bg = t.raised },
+    St_cwd = { fg = t.subtext, bg = t.raised }, -- was red, which means "error" in this palette
+    St_LspHints = { fg = t.aqua },
+    St_LspMsg = { fg = t.subtext },
+  }
 
-  -- hl_add creates groups (merged into the base46 `defaults` cache)
-  hl_add = {
-    NeoTreeCursorLine = { bg = "#141a17", bold = true },
-    NeoTreeGitUntracked = { fg = "#e69875" },
-    NotifyBackground = { bg = "#000000" },
-    AlphaHeader = { fg = "#d699b6" },
-    WinBar = { fg = "#a7c080", bold = true },
-    WinBarNC = { fg = "#6b7770" },
-    Cursor = { fg = "#000000", bg = "#e7dabe" }, -- same as the ghostty cursor colour
-    CursorInsert = { bg = "#7fbbb3" },
-    CursorVisual = { bg = "#d699b6" },
-    CursorReplace = { bg = "#e67e80" },
+  -- hl_override only touches groups that a base46 integration already defines
+  M.base46.hl_override = vim.deepcopy(shared)
 
-    -- real undercurl with palette colours (needs tmux terminal-features usstyle, set in S5)
-    DiagnosticUnderlineError = { undercurl = true, sp = "#e67e80" },
-    DiagnosticUnderlineWarn = { undercurl = true, sp = "#dbbc7f" },
-    DiagnosticUnderlineInfo = { undercurl = true, sp = "#7fbbb3" },
-    DiagnosticUnderlineHint = { undercurl = true, sp = "#83c092" },
-    DiagnosticUnnecessary = { fg = "#6b7770" },
+  -- hl_add creates groups (merged into the base46 `defaults` cache) and also covers the shared table
+  M.base46.hl_add = vim.tbl_extend("force", vim.deepcopy(shared), {
+    NeoTreeCursorLine = { bg = t.raised, bold = true },
+    NeoTreeGitUntracked = { fg = t.orange },
+    NotifyBackground = { bg = t.bg },
+    AlphaHeader = { fg = t.purple },
+    WinBar = { fg = t.green, bold = true },
+    WinBarNC = { fg = t.muted },
+    Cursor = { fg = t.cursor_text, bg = t.cursor }, -- same as the ghostty cursor colours
+    CursorInsert = { bg = t.blue },
+    CursorVisual = { bg = t.purple },
+    CursorReplace = { bg = t.red },
 
     -- agentdash statusline segment: same colours as the tmux agent badges
-    St_AgentWorking = { fg = "#dbbc7f", bg = "#000000" },
-    St_AgentWaiting = { fg = "#e69875", bg = "#000000" },
-    St_AgentDone = { fg = "#a7c080", bg = "#000000" },
-    St_AgentError = { fg = "#e67e80", bg = "#000000" },
-  },
-}
+    St_AgentWorking = { fg = t.yellow, bg = t.bg },
+    St_AgentWaiting = { fg = t.orange, bg = t.bg },
+    St_AgentDone = { fg = t.green, bg = t.bg },
+    St_AgentError = { fg = t.red, bg = t.bg },
+  })
+
+  -- :terminal gets the ANSI list through palette.apply() (base46 would colour it from base_16 by position,
+  -- which shows red as blue and green as yellow)
+  M.term = { base46_colors = false }
+end
 
 -- NvChad v2.5 reads the statusline/tabufline/telescope options from M.ui (not M.base46)
 M.ui = {
