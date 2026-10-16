@@ -11,6 +11,12 @@ return {
       "eslint-lsp",
 
       "typescript-language-server",
+      "yaml-language-server",
+      "json-lsp",
+      "dockerfile-language-server",
+      "docker-compose-language-service",
+      "bash-language-server",
+      "taplo",
       "js-debug-adapter",
 
       "gopls",

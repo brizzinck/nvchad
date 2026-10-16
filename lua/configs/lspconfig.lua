@@ -1,3 +1,6 @@
+-- base46 diagnostic/LSP highlight groups (Everforest Black); nvchad.configs.lspconfig is not used here
+dofile(vim.g.base46_cache .. "lsp")
+
 local lsp = vim.lsp
 
 -- nvim only sends `shutdown` on exit and never kills the server; without a timeout node/gopls
@@ -23,6 +26,8 @@ end
 lsp.config("gopls", {
   -- -remote=auto: one shared gopls daemon per workspace instead of one per nvim (exits ~1 min after last client)
   cmd = { "gopls", "-remote=auto" },
+  -- soft heap cap; the shared -remote=auto daemon inherits the environment
+  cmd_env = { GOMEMLIMIT = "2GiB" },
   root_markers = { "go.work", "go.mod", ".git" },
   filetypes = { "go", "gomod", "gowork", "gotmpl" },
   on_init = on_init,
@@ -218,6 +223,46 @@ lsp.config("typos_lsp", {
   capabilities = cmp_capabilities,
 })
 
+-- YAML / JSON with SchemaStore catalogs (loaded when the server starts, not at nvim startup)
+lsp.config("yamlls", {
+  on_attach = on_attach_extended,
+  capabilities = cmp_capabilities,
+  before_init = function(_, config)
+    config.settings.yaml.schemas = require("schemastore").yaml.schemas()
+  end,
+  settings = {
+    redhat = { telemetry = { enabled = false } },
+    yaml = {
+      keyOrdering = false,
+      format = { enable = true },
+      validate = true,
+      schemaStore = { enable = false, url = "" }, -- replaced by the SchemaStore.nvim catalog
+      schemas = {},
+    },
+  },
+})
+
+lsp.config("jsonls", {
+  on_attach = on_attach_extended,
+  capabilities = cmp_capabilities,
+  before_init = function(_, config)
+    config.settings.json.schemas = require("schemastore").json.schemas()
+  end,
+  settings = {
+    json = {
+      validate = { enable = true },
+      schemas = {},
+    },
+  },
+})
+
+for _, name in ipairs { "dockerls", "docker_compose_language_service", "bashls", "taplo", "ts_ls" } do
+  lsp.config(name, {
+    on_attach = on_attach_extended,
+    capabilities = cmp_capabilities,
+  })
+end
+
 vim.lsp.enable "gopls"
 vim.lsp.enable "dotnet"
 vim.lsp.enable "protols"
@@ -231,3 +276,10 @@ vim.lsp.enable "vue_ls"
 vim.lsp.enable "html"
 vim.lsp.enable "typos_lsp"
 vim.lsp.enable "marksman"
+vim.lsp.enable "yamlls"
+vim.lsp.enable "jsonls"
+vim.lsp.enable "dockerls"
+vim.lsp.enable "docker_compose_language_service"
+vim.lsp.enable "bashls"
+vim.lsp.enable "taplo"
+vim.lsp.enable "ts_ls"
