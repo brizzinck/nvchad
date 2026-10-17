@@ -50,7 +50,7 @@ lsp.config("gopls", {
 })
 
 lsp.config("dotnet", {
-  cmd = { "dotnet", vim.fn.stdpath "data" .. "/mason/packages/omnisharp/libexec/OmniSharp.dll" },
+  cmd = { "dotnet", require("shared").mason_root() .. "/packages/omnisharp/libexec/OmniSharp.dll" },
   filetypes = { "cs", "vb" },
   init_options = {},
   settings = {

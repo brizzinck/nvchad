@@ -2,6 +2,8 @@
 --   nvim --headless -c "luafile ~/.config/nvim/scripts/bootstrap.lua"
 -- Installs plugins pinned in lazy-lock.json, Mason tools, treesitter parsers and the
 -- agentdash hooks for Claude Code / Codex. Idempotent.
+-- NVIM_BOOTSTRAP_ONLY=shared (set by `usr nvim-sync`, with NVIM_SHARED) installs only the plugins and the Mason tools, into
+-- the shared directory the managed users read; treesitter parsers and agent hooks are per-user and are skipped.
 local function log(msg)
   io.stdout:write("[nvim-bootstrap] " .. msg .. "\n")
   io.stdout:flush()
@@ -42,18 +44,25 @@ step("mason tools", function()
       log("  " .. name .. " already installed")
     else
       log("  installing " .. name)
-      pkg:install()
+      -- wait for the install handle to close: is_installed() can turn true while the package is still being set up,
+      -- and quitting then terminates the installation (black and pylint were lost that way)
+      local handle = pkg:install()
       vim.wait(600000, function()
-        return pkg:is_installed()
+        return handle:is_closed()
       end, 500)
       if not pkg:is_installed() then
-        error("timeout installing " .. name)
+        error("failed or timed out installing " .. name)
       end
     end
   end
 end)
 
+local shared_only = vim.env.NVIM_BOOTSTRAP_ONLY == "shared"
+
 step("treesitter parsers", function()
+  if shared_only then
+    return
+  end
   vim.cmd "Lazy load nvim-treesitter"
   local ts = require "nvim-treesitter"
   local spec = require "plugins.treesitter"
@@ -70,6 +79,9 @@ step("treesitter parsers", function()
 end)
 
 step("agent hooks (agentdash → Claude Code / Codex)", function()
+  if shared_only then
+    return
+  end
   require("agentdash.install").run()
 end)
 

@@ -1,4 +1,9 @@
+local shared = require "shared"
+
 return {
+  -- plugin root and lockfile: per-user, or the shared read-only copy for managed users (lua/shared.lua)
+  root = shared.lazy_root(),
+  lockfile = shared.lockfile(),
   defaults = { lazy = true },
   -- Auto-reload on config edits pops a blocking "Press ENTER" prompt in every running nvim, which
   -- stops answering RPC and hangs RPC callers. Changes apply on next start instead.

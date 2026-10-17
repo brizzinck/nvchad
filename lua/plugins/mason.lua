@@ -1,6 +1,8 @@
 return {
   "williamboman/mason.nvim",
   opts = {
+    -- packages live in the shared read-only copy for managed users (lua/shared.lua), else in stdpath("data")/mason
+    install_root_dir = require("shared").mason_root(),
     ensure_installed = {
       "lua-language-server",
       "stylua",

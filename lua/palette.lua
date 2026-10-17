@@ -93,7 +93,7 @@ function M.ensure_cache()
   if read(stamp) == want and uv.fs_stat(dir .. "defaults") then
     return
   end
-  local lazy_dir = vim.fn.stdpath "data" .. "/lazy/"
+  local lazy_dir = require("shared").lazy_root() .. "/"
   if not (uv.fs_stat(lazy_dir .. "base46") and uv.fs_stat(lazy_dir .. "ui")) then
     return -- fresh machine: the NvChad build hook compiles the cache once the plugins are installed
   end
