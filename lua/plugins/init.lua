@@ -43,7 +43,6 @@ return {
   -- AI agent cockpit
   require "plugins.ai.sidekick",
   require "plugins.ai.codediff",
-  require "plugins.ai.mcphub",
   require "plugins.ai.agentic",
   require "plugins.ai.agentdash",
   require "plugins.ai.workmux",
