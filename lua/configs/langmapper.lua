@@ -4,6 +4,8 @@
 --                registers Cyrillic twins; init.lua calls automapping() once all mappings exist (built-ins too)
 -- The data (langmap string and layout strings) is generated from ~/.config/layout/keymap.tsv by
 -- ~/.config/layout/layout.py into lua/configs/layout_data.lua. Insert mode is never remapped, so typing works.
+-- On top of that configs/layout_switch.lua switches the keyboard itself (us in NORMAL and `:`, the buffer's layout
+-- while typing); langmap/langmapper are what still works when that is off or unavailable (SSH, TTY).
 local M = {}
 
 function M.setup()
@@ -18,6 +20,7 @@ function M.setup()
     },
     -- keep which-key / :map readable: the twins are marked "LM" and which-key filters them out (plugins/whichkey.lua)
   }
+  require("configs.layout_switch").setup()
 end
 
 function M.automapping()

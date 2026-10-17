@@ -15,6 +15,7 @@ pcall(vim.keymap.del, "n", "<leader>wk")
 map("n", "<C-s>", "<cmd>silent! write!<CR>", { desc = "Force Write" })
 map("n", "<leader>q", "<cmd>q<CR>", { desc = "Force Quit" })
 map("n", "<leader>n", "<cmd>enew<CR>", { desc = "New File" })
+map("n", "<leader>uk", "<cmd>LayoutAutoswitch toggle<CR>", { desc = "Toggle auto keyboard layout" })
 map("n", "<leader>cd", function()
   local path = vim.fn.expand "%:p:h"
   vim.cmd("cd " .. path)
