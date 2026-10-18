@@ -3,10 +3,27 @@
 --   langmapper   every vim.keymap.set mapping (leader, <C-x>, <M-x>, plugin keys): it hooks the keymap API and
 --                registers Cyrillic twins; init.lua calls automapping() once all mappings exist (built-ins too)
 -- The data (langmap string and layout strings) is generated from ~/.config/layout/keymap.tsv by
--- ~/.config/layout/layout.py into lua/configs/layout_data.lua. Insert mode is never remapped, so typing works.
+-- ~/.config/layout/layout.py into lua/configs/layout_data.lua. Insert typing stays literal except the explicit Escape pair.
 -- On top of that configs/layout_switch.lua switches the keyboard itself (us in NORMAL and `:`, the buffer's layout
 -- while typing); langmap/langmapper are what still works when that is off or unavailable (SSH, TTY).
 local M = {}
+
+function M.map_insert_escape()
+  local data = require "configs.layout_data"
+  local index = assert(data.default_layout:find("j", 1, true)) - 1 -- generated default layout is ASCII
+  local seen = {}
+  local function add(lhs)
+    if not seen[lhs] then
+      vim.keymap.set("i", lhs, "<ESC>", { desc = "Esc insert" })
+      seen[lhs] = true
+    end
+  end
+  add "jj"
+  for _, layout in pairs(data.layouts) do
+    local key = vim.fn.strcharpart(layout, index, 1)
+    add(key .. key)
+  end
+end
 
 function M.setup()
   local data = require "configs.layout_data"
